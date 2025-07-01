@@ -1,0 +1,48 @@
+# docker-compose.yml (na raiz do seu projeto)
+version: '3.8'
+services:
+  # Serviço para o seu backend PHP
+  app_backend:
+    build:
+      context: ./backend_php # Onde está a pasta do seu backend
+      dockerfile: Dockerfile   # Nome do Dockerfile dentro de ./backend_php
+    ports:
+      - "8000:80" # Mapeia a porta 8000 do host para a porta 80 do contêiner do backend
+    volumes:
+      - ./backend_php:/var/www/html # Monta o código do seu backend
+    depends_on:
+      - db # O backend depende do banco de dados para iniciar
+    environment: # Variáveis de ambiente para o seu backend PHP se conectar ao DB
+      DB_HOST: db # 'db' é o nome do serviço do banco de dados no Docker Compose
+      DB_NAME: my_app_db
+      DB_USER: user
+      DB_PASSWORD: password
+
+  # Serviço para o banco de dados MySQL
+  db:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: my_secure_root_password # Troque por uma senha forte!
+      MYSQL_DATABASE: my_app_db
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+    ports:
+      - "3306:3306" # Opcional: para acessar o DB do host com ferramentas como DBeaver/MySQL Workbench
+    volumes:
+      - db_data:/var/lib/mysql # Volume persistente para os dados do DB
+      # Se você tiver um script SQL para inicializar o DB:
+      # - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  # Serviço para o seu frontend React
+  react_frontend:
+    build:
+      context: ./sistema-usuarios # Onde está a pasta do seu frontend React
+      dockerfile: Dockerfile # Nome do Dockerfile dentro de ./frontend
+    ports:
+      - "3000:80" # Mapeia a porta 3000 do host para a porta 80 do Nginx no contêiner do frontend
+    depends_on:
+      - app_backend # O frontend depende do backend para as chamadas de API
+    environment:
+      # Variável de ambiente para o React saber onde está seu backend
+      # MUITO IMPORTANTE: use o nome do SERVIÇO do backend e a porta INTERNA dele (80)
+      REACT_APP_BACKEND_URL: http://app_backend:80
