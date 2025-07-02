@@ -10,16 +10,16 @@ const Login = () => {
   const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
-  const [senha, setSenha] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  const handleLogin = () => {
-    if (!email | !senha) {
+  const handleLogin = async () => {
+    if (!email | !password) {
       setError("Preencha todos os campos");
       return;
     }
 
-    const res = login(email, senha);
+    const res = await login(email, password);
 
     if (res) {
       setError(res);
@@ -42,8 +42,8 @@ const Login = () => {
         <Input
           type="password"
           placeholder="Digite sua Senha"
-          value={senha}
-          onChange={(e) => [setSenha(e.target.value), setError("")]}
+          value={password}
+          onChange={(e) => [setPassword(e.target.value), setError("")]}
         />
         <C.labelError>{error}</C.labelError>
         <Button Text="Entrar" onClick={handleLogin} />

@@ -31,14 +31,11 @@ export const AuthProvider = ({ children }) => {
   // --- Função de Login (login) ---
   const login = async (email, password) => { // Torne a função assíncrona
     try {
-      // Remove o uso de localStorage.getItem("users_bd")
-      // Chama o endpoint de login do SEU NOVO BACKEND PHP
       const response = await axios.post(`${BACKEND_URL}/login.php`, {
         email,
         password,
       });
 
-      // Supondo que seu backend PHP de login retorne um token e os dados do usuário
       const { token, user: userData } = response.data;
 
       if (token && userData) {
@@ -47,7 +44,6 @@ export const AuthProvider = ({ children }) => {
         setUser(userData); // Define o usuário no estado do contexto
         return null; // Retorna null para indicar sucesso (sem mensagem de erro)
       } else {
-        // Caso a resposta não tenha token ou userData, mas a requisição foi 2xx
         return response.data?.message || "Erro inesperado ao fazer login.";
       }
     } catch (error) {
@@ -61,10 +57,6 @@ export const AuthProvider = ({ children }) => {
   // --- Função de Registro (signup) ---
   const signup = async (email, password) => { // Torne a função assíncrona
     try {
-      // Remove o uso de localStorage.getItem("users_bd") para verificação de usuário existente
-      // Essa verificação agora será feita pelo seu backend PHP.
-
-      // Chama o endpoint de registro do SEU NOVO BACKEND PHP
       const response = await axios.post(`${BACKEND_URL}/register.php`, {
         email,
         password,

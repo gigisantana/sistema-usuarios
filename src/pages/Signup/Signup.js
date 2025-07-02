@@ -8,14 +8,14 @@ import useAuth from "../../hooks/useAuth";
 const Signup = () => {
   const [email, setEmail] = useState("");
   const [emailConf, setEmailConf] = useState("");
-  const [senha, setSenha] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const { signup } = useAuth();
 
-  const handleSignup = () => {
-    if (!email | !emailConf | !senha) {
+  const handleSignup = async () => {
+    if (!email | !emailConf | !password) {
       setError("Preencha todos os campos");
       return;
     } else if (email !== emailConf) {
@@ -23,7 +23,7 @@ const Signup = () => {
       return;
     }
 
-    const res = signup(email, senha);
+    const res = await signup(email, password);
 
     if (res) {
       setError(res);
@@ -53,8 +53,8 @@ const Signup = () => {
         <Input
           type="password"
           placeholder="Digite sua Senha"
-          value={senha}
-          onChange={(e) => [setSenha(e.target.value), setError("")]}
+          value={password}
+          onChange={(e) => [setPassword(e.target.value), setError("")]}
         />
         <C.labelError>{error}</C.labelError>
         <Button Text="Inscrever-se" onClick={handleSignup} />

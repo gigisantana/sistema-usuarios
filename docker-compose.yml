@@ -1,10 +1,10 @@
-# docker-compose.yml (na raiz do seu projeto)
+# docker-compose.yml (na raiz da pasta `sistema-usuarios`)
 version: '3.8'
 services:
   # Serviço para o seu backend PHP
   app_backend:
     build:
-      context: ./backend_php # Onde está a pasta do seu backend
+      context: ./backend_php # Caminho para a pasta do backend
       dockerfile: Dockerfile   # Nome do Dockerfile dentro de ./backend_php
     ports:
       - "8000:80" # Mapeia a porta 8000 do host para a porta 80 do contêiner do backend
@@ -30,19 +30,24 @@ services:
       - "3306:3306" # Opcional: para acessar o DB do host com ferramentas como DBeaver/MySQL Workbench
     volumes:
       - db_data:/var/lib/mysql # Volume persistente para os dados do DB
-      # Se você tiver um script SQL para inicializar o DB:
-      # - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      # Como init.sql está na raiz da pasta sistema-usuarios:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql # Adicione esta linha se não tiver
 
-  # Serviço para o seu frontend React
+  # Serviço para o seu frontend React (AGORA CORRETO PARA SUA ESTRUTURA)
   react_frontend:
     build:
-      context: ./sistema-usuarios # Onde está a pasta do seu frontend React
-      dockerfile: Dockerfile # Nome do Dockerfile dentro de ./frontend
+      context: . # <--- CORRIGIDO: O contexto é o diretório atual (sistema-usuarios)
+      dockerfile: Dockerfile # <--- Nome do Dockerfile (que está na raiz de sistema-usuarios)
     ports:
       - "3000:80" # Mapeia a porta 3000 do host para a porta 80 do Nginx no contêiner do frontend
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
     depends_on:
       - app_backend # O frontend depende do backend para as chamadas de API
     environment:
       # Variável de ambiente para o React saber onde está seu backend
-      # MUITO IMPORTANTE: use o nome do SERVIÇO do backend e a porta INTERNA dele (80)
       REACT_APP_BACKEND_URL: http://app_backend:80
+
+# Esta seção 'volumes' deve estar no mesmo nível de indentação que 'services:'
+volumes:
+  db_data:
