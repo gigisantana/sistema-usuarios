@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import Button from "../../components/Button";
 import useAuth from "../../hooks/useAuth";
-import * as C from "./styles";
+import * as C from "./stylesHome";
 
 const Home = () => {
   const { signout } = useAuth();

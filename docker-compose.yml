@@ -1,7 +1,4 @@
-# docker-compose.yml (na raiz da pasta `sistema-usuarios`)
-version: '3.8'
 services:
-  # Serviço para o seu backend PHP
   app_backend:
     build:
       context: ./backend_php # Caminho para a pasta do backend

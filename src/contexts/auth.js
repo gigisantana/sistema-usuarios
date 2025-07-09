@@ -86,9 +86,52 @@ export const AuthProvider = ({ children }) => {
     // Se você tiver um endpoint de logout no backend para invalidar o token, chame-o aqui.
   };
 
+  const forgotPasswordRequest = async (email) => {
+    try {
+      const response = await axios.post(`${BACKEND_URL}/forgot_password.php`, {
+        email,
+      });
+
+      if (response.status === 200) {
+        return null; // Sucesso, backend enviou o e-mail
+      } else {
+        return response.data?.message || "Erro ao solicitar redefinição.";
+      }
+    } catch (error) {
+      console.error("Erro na solicitação de redefinição:", error.response?.data || error.message);
+      return error.response?.data?.message || "Erro de conexão ao solicitar redefinição. Tente novamente.";
+    }
+  };
+
+  const resetPassword = async (token, newPassword) => {
+    try {
+      const response = await axios.post(`${BACKEND_URL}/reset_password.php`, {
+        token,
+        password: newPassword, // Envia a nova senha
+      });
+
+      if (response.status === 200) {
+        return null; // Sucesso
+      } else {
+        return response.data?.message || "Erro ao redefinir senha.";
+      }
+    } catch (error) {
+      console.error("Erro na redefinição de senha:", error.response?.data || error.message);
+      return error.response?.data?.message || "Erro de conexão ao redefinir senha. Tente novamente.";
+    }
+  };
+
   return (
     <AuthContext.Provider
-      value={{ user, signed: !!user, login, signup, signout }}
+      value={{ 
+        user, 
+        signed: !!user, 
+        login, 
+        signup, 
+        signout, 
+        forgotPasswordRequest,
+        resetPassword
+      }}
     >
       {children}
     </AuthContext.Provider>

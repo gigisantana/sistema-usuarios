@@ -5,8 +5,8 @@ export const Container = styled.div`
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  gap: 10px;
   height: 100vh;
+  gap: 20px;
 `;
 
 export const Content = styled.div`
@@ -24,14 +24,10 @@ export const Content = styled.div`
 `;
 
 export const Label = styled.label`
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 600;
-  color: #676767;
-`;
-
-export const LabelSignup = styled.label`
-  font-size: 16px;
-  color: #676767;
+  color: #333;
+  text-align: center;
 `;
 
 export const Title = styled.h2`
@@ -40,28 +36,20 @@ export const Title = styled.h2`
   margin-bottom: 10px;
 `;
 
-export const LabelError = styled.label`
+export const Message = styled.p`
   font-size: 14px;
-  color: red;
+  color: ${({ type }) => (type === "error" ? "red" : "green")};
+  text-align: center;
 `;
 
-export const Strong = styled.strong`
-  cursor: pointer;
+export const LinkContainer = styled.div`
+  margin-top: 10px;
 
   a {
+    font-size: 14px;
+    color: #007bff;
     text-decoration: none;
-    color: #676767;
-  }
-`;
 
-export const LabelForgot = styled.label`
-  font-size: 14px; /* Um pouco menor */
-  margin-top: 10px; /* Espaço acima */
-
-  a {
-    text-decoration: none;
-    color: #007bff; /* Uma cor diferente para destacar */
-    
     &:hover {
       text-decoration: underline;
     }

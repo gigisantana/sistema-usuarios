@@ -1,12 +1,14 @@
+// src/pages/ForgotPassword/stylesForgotPassword.js
 import styled from "styled-components";
 
+// Reutilizando os estilos básicos que você já usa
 export const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  gap: 10px;
   height: 100vh;
+  gap: 20px; /* Aumentei um pouco o gap para o título principal */
 `;
 
 export const Content = styled.div`
@@ -24,44 +26,32 @@ export const Content = styled.div`
 `;
 
 export const Label = styled.label`
-  font-size: 18px;
+  font-size: 20px; /* Título principal maior */
   font-weight: 600;
-  color: #676767;
-`;
-
-export const LabelSignup = styled.label`
-  font-size: 16px;
-  color: #676767;
+  color: #333; /* Cor mais escura para o título principal */
+  text-align: center;
 `;
 
 export const Title = styled.h2`
-  font-size: 22px;
+  font-size: 22px; /* Título interno do formulário */
   color: #676767;
   margin-bottom: 10px;
 `;
 
-export const LabelError = styled.label`
+export const Message = styled.p`
   font-size: 14px;
-  color: red;
+  color: ${({ type }) => (type === "error" ? "red" : "green")}; /* Mensagens coloridas */
+  text-align: center;
 `;
 
-export const Strong = styled.strong`
-  cursor: pointer;
+export const LinkContainer = styled.div`
+  margin-top: 10px;
 
   a {
+    font-size: 14px;
+    color: #007bff; /* Cor de link padrão */
     text-decoration: none;
-    color: #676767;
-  }
-`;
 
-export const LabelForgot = styled.label`
-  font-size: 14px; /* Um pouco menor */
-  margin-top: 10px; /* Espaço acima */
-
-  a {
-    text-decoration: none;
-    color: #007bff; /* Uma cor diferente para destacar */
-    
     &:hover {
       text-decoration: underline;
     }
